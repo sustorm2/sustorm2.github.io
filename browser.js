@@ -74,6 +74,7 @@ window.onload = function() {
         var playerId = players.options[players.selectedIndex].playerId;
         console.log(playerId);
         document.getElementById("player_id").value = playerId;
+        startWebSocket();
     }
     fetch("https://hs.vtolvr.live/api/v1/public/online")
         .then(response => {
