@@ -72,7 +72,7 @@ window.onload = function() {
     var players = document.getElementById("online");
     var options = document.getElementById("players");
     players.onchange = (event) => {
-        var playerId = players.options[players.selectedIndex].playerId;
+        var playerId = players.value.split(": ")[1];
         console.log(playerId);
         document.getElementById("player_id").value = playerId;
         startWebSocket();
@@ -89,7 +89,6 @@ window.onload = function() {
             for (var element of data) {
                 var option = document.createElement("option");
                 option.text = element.name + ": " + element.id;
-                option.playerId = element.id;
                 options.appendChild(option);
             }
         })
