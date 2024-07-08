@@ -70,6 +70,7 @@ window.onload = function() {
     initMusic();
     console.log("Fetching users");
     var players = document.getElementById("online");
+    var options = document.getElementById("players");
     players.onchange = (event) => {
         var playerId = players.options[players.selectedIndex].playerId;
         console.log(playerId);
@@ -89,10 +90,10 @@ window.onload = function() {
                 var option = document.createElement("option");
                 option.text = element.name + ": " + element.id;
                 option.playerId = element.id;
-                players.add(option);
+                options.appendChild(option);
             }
         })
         .catch(error => {
-            console.loog("Error:", error);
+            console.log("Error:", error);
         });
 };
