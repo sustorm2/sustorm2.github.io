@@ -1,20 +1,74 @@
-<body>
-    <label for="kill_sound">Choose a sound, or upload your own:</label>
-    <br>
-    <select name="kill_sound" id="kill_sound">
-        <option onclick="initAndPlayMusic()" value="war-thunder-kill.mp3">War Thunder</option>
-        <option onclick="initAndPlayMusic()" value="critical-hit-sounds-effect.mp3">TF2</option>
-        <option onclick="initAndPlayMusic()" value="bhit_helmet-1.mp3">CS</option>
-    </select>
-    <label for="volume">Volume:</label>
-    <input name="volume" type="range" min="0" max="1.0" step="0.05" value="1.0" class="slider" id="volume">
-    <br>
-    <input type="file" id="musicFile" accept="audio/*" onchange="initMusic()">
-    <button onclick="playMusic()">Play</button>
+<!doctype html>
+<html lang="en" style="height: 100%;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ranked BVR Kill Noise</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 75px; background: #000000;">
+    <div style="width: 600px; display: flex; flex-direction: column; align-items: center; gap: 10px; box-sizing: border-box; padding: 10px">
+        <p style="font-family: Inter, system-ui; font-weight: 800; font-size: 40px; text-align: center; color: #FFFFFF">VTOL VR Ranked BVR Server Custom Kill Noise</p>
+        <p style="box-sizing: border-box; padding: 0 75px; width: 100%; font-family: Inter, system-ui; font-weight: 600; font-size: 24px; text-align: center; color: #FFFFFF;">Choose or upload a sound to play when the selected user gets a kill</p>
+    </div>
+    <div style="border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 10px; box-sizing: border-box; padding: 10px; background: rgba(255, 255, 255, 0.1);">
+        <div style="display: flex; flex-direction: row; align-items: center; gap: 10px; box-sizing: border-box; padding: 10px;">
+            <p style="font-family: Inter, system-ui; font-weight: 600; font-size: 24px; color: #FFFFFF">Choose a sound:</p>
+            <select name="kill_sound" id="kill_sound" style="border-radius: 12px; background: rgba(255, 255, 255, 0.25); border: none; padding: 9px; color: #FFFFFF; font-family: Inter, system-ui; font-weight: 500; font-size: 20px; cursor: pointer">
+                <option onclick="initAndPlayMusic()" value="war-thunder-kill.mp3">War Thunder</option>
+                <option onclick="initAndPlayMusic()" value="critical-hit-sounds-effect.mp3">TF2</option>
+                <option onclick="initAndPlayMusic()" value="bhit_helmet-1.mp3">CS</option>
+            </select>
+            <label for="musicFile" style="border-radius: 12px; padding: 10px; background: rgba(255, 255, 255, 0.25); color: #FFFFFF; font-family: Inter, system-ui; font-weight: 500; text-decoration: underline; font-size: 20px; cursor: pointer;">Upload your own</label>
+            <input type="file" id="musicFile" accept="audio/*" onchange="initMusic()" style="display: none">
+            <button onclick="playMusic()" style="background: none; border: none; cursor: pointer;"><svg width="40" height="41" viewBox="0 0 40 41" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 28.74V12.26C14 11.8089 14.1518 11.4444 14.4554 11.1667C14.759 10.8889 15.1132 10.75 15.5179 10.75C15.6443 10.75 15.7771 10.7708 15.9162 10.8125C16.0554 10.8542 16.19 10.9149 16.32 10.9946L29.0417 19.25C29.2639 19.3978 29.4375 19.5826 29.5625 19.8046C29.6875 20.0263 29.75 20.2603 29.75 20.5067C29.75 20.7531 29.6875 20.9872 29.5625 21.2092C29.4375 21.4308 29.2639 21.6111 29.0417 21.75L16.3196 30.0104C16.1896 30.0904 16.0529 30.1503 15.9096 30.19C15.7665 30.23 15.63 30.25 15.5 30.25C15.1 30.25 14.75 30.1111 14.45 29.8333C14.15 29.5556 14 29.1911 14 28.74Z" fill="#E8EAED"/></svg></button>
+        </div>
+        <div style="width: 100%; display: flex; flex-direction: row; align-items: center; gap: 10px; box-sizing: border-box; padding: 10px">
+            <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e8eaed"><path d="M360-360H233.33q-14.33 0-23.83-9.5-9.5-9.5-9.5-23.83v-173.34q0-14.33 9.5-23.83 9.5-9.5 23.83-9.5H360l143.33-143.33Q519-759 539.5-750.5t20.5 30.83v479.34q0 22.33-20.5 30.83t-36.17-7.17L360-360Zm380-120q0 48.67-23.67 89.17-23.66 40.5-65.33 63.16-8.67 4.67-16.5-.5-7.83-5.16-7.83-14.5v-276q0-9.33 7.83-14.5 7.83-5.16 16.5-.5 41.67 23 65.33 64.34Q740-528 740-480Z"/></svg>
+            <input type="range" min="0" max="1.0" step="0.0001" value="1.0" id="volume" style="width: 100%; appearance: none; cursor: pointer; border-radius: 100vh; overflow: hidden; outline: none; background: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#e8eaed"><path d="M773.33-481q0-90.33-49.66-163.17Q674-717 592.67-751q-13-5.67-18.67-17.83-5.67-12.17-.67-24.5 5.34-13.34 18.84-18.67 13.5-5.33 27.5.33 99.66 41.67 160 131.17Q840-591 840-481t-60.33 199.5q-60.34 89.5-160 131.17-14 5.66-27.5.33t-18.84-18.67q-5-12.33.67-24.5 5.67-12.16 18.67-17.83 81.33-34 131-106.83 49.66-72.84 49.66-163.17ZM280-360H153.33q-14.33 0-23.83-9.5-9.5-9.5-9.5-23.83v-173.34q0-14.33 9.5-23.83 9.5-9.5 23.83-9.5H280l143.33-143.33Q439-759 459.5-750.5t20.5 30.83v479.34q0 22.33-20.5 30.83t-36.17-7.17L280-360Zm380-120q0 48.67-23.67 89.17-23.66 40.5-65.33 63.16-8.67 4.67-16.5-.5-7.83-5.16-7.83-14.5v-276q0-9.33 7.83-14.5 7.83-5.16 16.5-.5 41.67 23 65.33 64.34Q660-528 660-480Z"/></svg>
+        </div>
+        <div style="width: 100%; display: flex; flex-direction: row; gap: 10px; box-sizing: border-box; padding: 10px;">
+            <input list="players" name="online" id="online" placeholder="Choose a player or type a selector" style="width: 100%; border-radius: 12px; padding: 10px; background: rgba(255, 255, 255, 0.25); border: none; font-family: Inter, system-ui; font-weight: 500; font-size: 20px; color: #FFFFFF; cursor: pointer;">
+            <datalist id="players"></datalist>
+            <button onclick="startWebSocket()" style="border-radius: 12px; padding: 10px; background: rgba(255, 255, 255, 0.25); border: none; font-family: Inter, system-ui; font-weight: 500; font-size: 20px; text-decoration: underline; color: #FFFFFF; cursor: pointer">Start</button>
+        </div>
+    </div>
+    <style>
+        #volume::-webkit-slider-runnable-track {
+            height: 15px;
+            background: #535353;
+            border-radius: 100vh;
+        }
+
+        #volume::-webkit-slider-thumb {
+            appearance: none;
+            height: 15px;
+            width: 15px;
+            background: #000000;
+            border-radius: 100vh;
+            border: 2px solid #FFFFFF;
+            box-shadow: -407px 0 0 400px #FFFFFF;
+        }
+
+        #online::placeholder {
+            color: #C8C8C8;
+        }
+
+        #online::-webkit-calendar-picker-indicator {
+            display: none !important;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
     <audio id="musicPlayer"></audio>
-    <br>
-    <input name="player_id" id="player_id"></input>
-    <button onclick="startWebSocket()">Start</button>
-    <select name="online" id="online"></select>
-    <script src="./browser.js"></script>
+    <script src="./browser.js" />
 </body>
+</html>
