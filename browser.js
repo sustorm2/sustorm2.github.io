@@ -48,6 +48,9 @@ function startWebSocket() {
             }
         }
     });
+    var websocketStatus = document.getElementById("websocket-status");
+    websocketStatus.textContent = "Websocket: Connected";
+    websocketStatus.style.color = "#AAFFAA";
     socketStarted = true;
 }
 
