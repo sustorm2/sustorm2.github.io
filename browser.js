@@ -16,6 +16,7 @@ function startWebSocket() {
     socket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data);
         console.log(JSON.stringify(message));
+        console.log("Current playerid is: " + playerId);
         if (message.type === "ping") {
             socket.send(JSON.stringify({type: "pong"}));
         } else {
