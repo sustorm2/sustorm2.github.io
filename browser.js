@@ -1,9 +1,30 @@
 var socketStarted = false
 var playerId = null;
+
+function updatePlayerId() {
+    var players = document.getElementById("online");
+
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("user")) {
+        playerId = urlParams.get("user");
+        for (let i = 0; i < players.list.options.length; i++) {
+            if (playerId === players.list.options[i].value.split(": ")[1]) {
+                players.value = players.list.options[i].value;
+                return true;
+            }
+        }
+    }
+    playerId = players.value.split(": ")[1];
+    return playerId !== null;
+}
+
 function startWebSocket() {
     console.log(socketStarted);
     initMusic();
     if (socketStarted) {
+        return;
+    }
+    if (!playerId) {
         return;
     }
     console.log("Opening socket");
@@ -71,11 +92,15 @@ window.onload = function() {
     console.log("Fetching users");
     var players = document.getElementById("online");
     var options = document.getElementById("players");
-    players.onchange = (event) => {
-        var players = document.getElementById("online");
-        playerId = players.value.split(": ")[1];
-        startWebSocket();
+
+    players.oninput = (event) => {
+        if (updatePlayerId()) {
+            startWebSocket();
+        } else {
+            console.log("Invalid player id");
+        }
     }
+
     fetch("https://hs.vtolvr.live/api/v1/public/online")
         .then(response => {
             if (!response.ok) {
@@ -90,13 +115,13 @@ window.onload = function() {
                 option.text = element.name + ": " + element.id;
                 options.appendChild(option);
             }
+            if (updatePlayerId()) {
+                startWebSocket();
+            } else {
+                console.log("Invalid player id");
+            }
         })
         .catch(error => {
             console.log("Error:", error);
         });
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has("user")) {
-        playerId = urlParams.get("user");
-    }
-    startWebSocket();
 };
