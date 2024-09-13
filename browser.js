@@ -1,4 +1,5 @@
 var socketStarted = false
+var playerId = null;
 function startWebSocket() {
     console.log(socketStarted);
     initMusic();
@@ -19,9 +20,6 @@ function startWebSocket() {
             socket.send(JSON.stringify({type: "pong"}));
         } else {
             console.log(JSON.stringify(message));
-            var players = document.getElementById("online");
-            var playerId = players.value.split(": ")[1];
-            console.log(playerId);
             if (message.data.killer.ownerId === playerId || playerId === "*") {
                 var musicPlayer = document.getElementById("musicPlayer");
                 musicPlayer.play();
@@ -73,6 +71,8 @@ window.onload = function() {
     var players = document.getElementById("online");
     var options = document.getElementById("players");
     players.onchange = (event) => {
+        var players = document.getElementById("online");
+        playerId = players.value.split(": ")[1];
         startWebSocket();
     }
     fetch("https://hs.vtolvr.live/api/v1/public/online")
@@ -93,4 +93,9 @@ window.onload = function() {
         .catch(error => {
             console.log("Error:", error);
         });
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("user")) {
+        playerId = urlParams.get("user");
+    }
+    startWebSocket();
 };
