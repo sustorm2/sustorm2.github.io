@@ -3,9 +3,10 @@ var playerId = null;
 
 function updatePlayerId() {
     var players = document.getElementById("online");
+    let playerIdInput = players.value.split(": ")[1];
 
     var urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has("user")) {
+    if (urlParams.has("user") && playerIdInput === undefined) {
         playerId = urlParams.get("user");
         for (let i = 0; i < players.list.options.length; i++) {
             if (playerId === players.list.options[i].value.split(": ")[1]) {
@@ -15,7 +16,10 @@ function updatePlayerId() {
         }
     }
     playerId = players.value.split(": ")[1];
-    return playerId !== null;
+    if (playerId) {
+        window.history.pushState({}, "", `?user=${playerId}`);
+    }
+    return !!playerId;
 }
 
 function startWebSocket() {
@@ -96,7 +100,7 @@ window.onload = function() {
     var players = document.getElementById("online");
     var options = document.getElementById("players");
 
-    players.oninput = (event) => {
+    players.onchange = (event) => {
         if (updatePlayerId()) {
             startWebSocket();
         } else {
