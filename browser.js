@@ -1,6 +1,21 @@
 var socketStarted = false
 var playerId = null;
 
+//https://github.com/Strikeeaglechase/HSEloServer/blob/master/src/elo/eloUpdater.ts#L76C21-L76C30
+const maxCfitDist = 20 * 1852;
+const maxCfitDistSq = maxCfitDist * maxCfitDist;
+
+function isValidKill(kill) {
+    // If this not a CFIT, is valid
+    if (kill.weapon !== "CFIT") {
+        return true;
+    }
+    const victimPos = kill.victim.position;
+    const killerPos = kill.killer.position;
+    const d2 = Math.pow(victimPos.x - killerPos.x, 2) + Math.pow(victimPos.y - killerPos.y, 2) + Math.pow(victimPos.z - killerPos.z, 2);
+    return d2 <= maxCfitDistSq;
+}
+
 function updatePlayerId() {
     var players = document.getElementById("online");
     let playerIdInput = players.value.split(": ")[1];
@@ -42,13 +57,11 @@ function startWebSocket() {
 
     socket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data);
-        console.log(JSON.stringify(message));
-        console.log("Current playerid is: " + playerId);
         if (message.type === "ping") {
             socket.send(JSON.stringify({type: "pong"}));
         } else {
             console.log(JSON.stringify(message));
-            if (message.data.killer.ownerId === playerId || playerId === "*") {
+            if (message.data.killer.ownerId === playerId && isValidKill(message.data)) {
                 var musicPlayer = document.getElementById("musicPlayer");
                 musicPlayer.play();
             }
