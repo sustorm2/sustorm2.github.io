@@ -17,7 +17,9 @@ function updatePlayerId() {
     }
     playerId = players.value.split(": ")[1];
     if (playerId) {
-        window.history.pushState({}, "", `?user=${playerId}`);
+        let url = new URL(window.location.toString());
+        url.searchParams.set("user", playerId);
+        window.history.pushState({}, "", url.search);
     }
     return !!playerId;
 }
@@ -69,6 +71,11 @@ function initMusic() {
     var musicFile = document.getElementById("musicFile").files[0];
     if (musicFile === undefined) {
         var soundSelect = document.getElementById("kill_sound");
+
+        let url = new URL(window.location.toString());
+        url.searchParams.set("sound", soundSelect.selectedIndex);
+        window.history.pushState({}, "", url.search);
+
         var srcUrl = soundSelect.options[soundSelect.selectedIndex].value;
         musicPlayer.src = "https://cdn.jsdelivr.net/gh/sustorm2/sustorm2.github.io/" + srcUrl;
         var volume = 1.0;
@@ -79,7 +86,6 @@ function initMusic() {
         var volumeSlider = document.getElementById("volume");
         volumeSlider.value = volume;
         musicPlayer.volume = volume;
-
     } else {
         musicPlayer.src = URL.createObjectURL(musicFile);
         var volumeSlider = document.getElementById("volume");
@@ -95,6 +101,13 @@ function playMusic() {
 }
 
 window.onload = function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("sound")) {
+        console.log(soundSelect);
+        var soundSelect = document.getElementById("kill_sound");
+        soundSelect.selectedIndex = urlParams.get("sound");
+    }
+
     initMusic();
     console.log("Fetching users");
     var players = document.getElementById("online");
