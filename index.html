@@ -20,9 +20,10 @@
         <div style="display: flex; flex-direction: row; align-items: center; gap: 10px; box-sizing: border-box; padding: 10px;">
             <p style="font-family: Inter, system-ui; font-weight: 600; font-size: 24px; color: #FFFFFF">Choose a sound:</p>
             <select name="kill_sound" id="kill_sound" style="border-radius: 12px; background: rgba(255, 255, 255, 0.25); border: none; padding: 9px; color: #FFFFFF; font-family: Inter, system-ui; font-weight: 500; font-size: 20px; cursor: pointer">
-                <option onclick="initAndPlayMusic()" value="war-thunder-kill.mp3">War Thunder</option>
-                <option onclick="initAndPlayMusic()" value="critical-hit-sounds-effect.mp3">TF2</option>
-                <option onclick="initAndPlayMusic()" value="bhit_helmet-1.mp3">CS</option>
+                <option style='color:black' onclick="initAndPlayMusic()" value="war-thunder-kill.mp3">War Thunder</option>
+                <option style='color:black' onclick="initAndPlayMusic()" value="critical-hit-sounds-effect.mp3">TF2</option>
+                <option style='color:black' onclick="initAndPlayMusic()" value="bhit_helmet-1.mp3">CS</option>
+                <option style='color:black' onclick="initAndPlayMusic()" value="peeetbahlll.mp3">Peetbahl</option>
             </select>
             <label for="musicFile" style="border-radius: 12px; padding: 10px; background: rgba(255, 255, 255, 0.25); color: #FFFFFF; font-family: Inter, system-ui; font-weight: 500; text-decoration: underline; font-size: 20px; cursor: pointer;">Upload your own</label>
             <input type="file" id="musicFile" accept="audio/*" onchange="initMusic()" style="display: none">
